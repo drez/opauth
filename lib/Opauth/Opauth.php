@@ -1,8 +1,8 @@
 <?php
 
 /**
-			 * Opauth
-			 * Multi-provider authentication framework for PHP
+ * Opauth
+ * Multi-provider authentication framework for PHP
  *
  * @copyright    Copyright © 2012 U-Zyn Chua (http://uzyn.com)
  * @link         http://opauth.org
@@ -291,6 +291,7 @@ class Opauth
 				$this->env['strategy_dir'] . strtolower($strategy) . '/',
 				$this->env['strategy_dir'] . 'Opauth-' . $strategy . '/',
 				$this->env['strategy_dir'] . "../../" . strtolower($strategy) . '/',
+				$this->env['strategy_dir'] . "../../../" . strtolower($strategy) . '/',
 			);
 
 			// Include deprecated support for strategies without Strategy postfix as class name or filename
