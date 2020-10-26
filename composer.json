@@ -2,7 +2,16 @@
 	"name": "opauth/opauth",
 	"description": "Multi-provider authentication framework for PHP",
 	"type": "library",
-	"keywords": ["authentication","auth","oauth","openid","omniauth","facebook","google","twitter"],
+	"keywords": [
+		"authentication",
+		"auth",
+		"oauth",
+		"openid",
+		"omniauth",
+		"facebook",
+		"google",
+		"twitter"
+	],
 	"homepage": "http://opauth.org",
 	"license": "MIT",
 	"authors": [
@@ -21,8 +30,13 @@
 		"opauth/twitter": "Allows Twitter authentication"
 	},
 	"autoload": {
-		"classmap": [ 
+		"classmap": [
 			"lib/Opauth/"
 		]
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-switch_2_curl": "1.0.x-dev"
+		}
 	}
 }
