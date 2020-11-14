@@ -426,15 +426,31 @@ class OpauthStrategy
 	{
 		if (!empty($options) && is_array($options)) {
 			if (empty($options['http']['header'])) {
-				$options['http']['header'] = "User-Agent: opauth";
+				$options['http']['header'][] = "User-Agent: opauth";
 			} else {
-				$options['http']['header'] .= "\r\nUser-Agent: opauth";
+				$nouseragent == true;
+				if (is_array($options['http']['header'])) {
+					foreach ($options['http']['header'] as $header) {
+						if (strstr('user-agent', strtolower($header))) {
+							$nouseragent = false;
+							break;
+						}
+					}
+
+					if ($nouseragent) {
+						$options['http']['header'][] = "User-Agent: opauth";
+					}
+				} else {
+					unset($options['http']['header']);
+					$options['http']['header'][] = "User-Agent: opauth";
+				}
 			}
 		} else {
-			$options = array('http' => array('header' => 'User-Agent: opauth'));
+			$options = array('http' => array('header' => ['User-Agent: opauth']));
 		}
 
 		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $options['http']['header']);
 		if ($options['http']['method'] == 'POST') {
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $options['http']['content']);
 			curl_setopt($ch, CURLOPT_POST, 1);
@@ -460,14 +476,17 @@ class OpauthStrategy
 		$arr = array();
 		$_arr = is_object($obj) ? get_object_vars($obj) : $obj;
 
-		foreach ($_arr as $key => $val) {
-			$val = (is_array($val) || is_object($val)) ? self::recursiveGetObjectVars($val) : $val;
+		if ($_arr) {
+			foreach ($_arr as $key => $val) {
+				$val = (is_array($val) || is_object($val)) ? self::recursiveGetObjectVars($val) : $val;
 
-			// Transform boolean into 1 or 0 to make it safe across all Opauth HTTP transports
-			if (is_bool($val)) $val = ($val) ? 1 : 0;
+				// Transform boolean into 1 or 0 to make it safe across all Opauth HTTP transports
+				if (is_bool($val)) $val = ($val) ? 1 : 0;
 
-			$arr[$key] = $val;
+				$arr[$key] = $val;
+			}
 		}
+
 
 		return $arr;
 	}
