@@ -376,7 +376,12 @@ class OpauthStrategy
 	 */
 	public static function serverGet($url, $data, $options = null, &$responseHeaders = null)
 	{
-		return self::httpRequest($url . '?' . http_build_query($data, '', '&'), $options, $responseHeaders);
+		if($data){
+			return self::httpRequest($url . '?' . http_build_query($data, '', '&'), $options, $responseHeaders);
+		}else{
+			return self::httpRequest($url , $options, $responseHeaders);
+		}
+		
 	}
 
 	/**
@@ -459,6 +464,7 @@ class OpauthStrategy
 		curl_setopt($ch, CURLOPT_URL, $url);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		$content = curl_exec($ch);
+		//$info = curl_getinfo($ch);
 		curl_close($ch);
 
 		return $content;
